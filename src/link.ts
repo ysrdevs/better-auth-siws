@@ -44,12 +44,29 @@ export const siwsLink = (_options?: Pick<SiwsPluginOptions, "chainId">) => ({
         const { input, output } = ctx.body;
         const walletAddress = output.account.address;
 
+        // Verify nonce from verification table to prevent replay attacks
+        const verification =
+          await ctx.context.internalAdapter.findVerificationValue(
+            `siws:${walletAddress}`
+          );
+
+        if (!verification || new Date() > verification.expiresAt) {
+          throw new APIError("UNAUTHORIZED", {
+            message: "Invalid or expired nonce. Please request a new one.",
+          });
+        }
+
         const isValid = verifySIWS(input, output);
         if (!isValid) {
           throw new APIError("BAD_REQUEST", {
             message: "Invalid signature",
           });
         }
+
+        // Delete used nonce to prevent reuse
+        await ctx.context.internalAdapter.deleteVerificationValue(
+          verification.id
+        );
 
         const existing = await ctx.context.adapter.findOne({
           model: "account",

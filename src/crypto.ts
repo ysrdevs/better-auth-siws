@@ -49,8 +49,7 @@ export function verifySIWS(
           : new Uint8Array(output.signedMessage),
     };
     return verifySignIn(input, reconstructed);
-  } catch (error) {
-    console.error("SIWS verification error:", error);
+  } catch {
     return false;
   }
 }

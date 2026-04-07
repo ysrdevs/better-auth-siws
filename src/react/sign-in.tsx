@@ -9,9 +9,11 @@ import { SolanaProvider, type SolanaProviderProps } from "./provider";
 
 export type SolanaSignInButtonProps = {
   baseURL?: string;
+  basePath?: string;
   onSuccess?: (user: { id: string; name: string; email: string }) => void;
   onError?: (error: string) => void;
   className?: string;
+  disabled?: boolean;
   children?: React.ReactNode;
   cluster?: SolanaProviderProps["cluster"];
   endpoint?: SolanaProviderProps["endpoint"];
@@ -19,9 +21,11 @@ export type SolanaSignInButtonProps = {
 
 function SolanaSignInInner({
   baseURL = "",
+  basePath = "/api/auth",
   onSuccess,
   onError,
   className,
+  disabled,
   children,
 }: Omit<SolanaSignInButtonProps, "cluster" | "endpoint">) {
   const { publicKey, connected, disconnect, wallet, connecting, connect } =
@@ -84,7 +88,7 @@ function SolanaSignInInner({
     setLoading(true);
 
     try {
-      const nonceRes = await fetch(`${baseURL}/api/auth/siws/nonce`, {
+      const nonceRes = await fetch(`${baseURL}${basePath}/siws/nonce`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ walletAddress: publicKey.toBase58() }),
@@ -103,7 +107,7 @@ function SolanaSignInInner({
       const output = await adapter.signIn(input);
       const serialized = serializeOutput(output);
 
-      const verifyRes = await fetch(`${baseURL}/api/auth/siws/verify`, {
+      const verifyRes = await fetch(`${baseURL}${basePath}/siws/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input, output: serialized }),
@@ -131,7 +135,7 @@ function SolanaSignInInner({
   return (
     <button
       onClick={handleClick}
-      disabled={loading}
+      disabled={loading || disabled}
       className={className}
       type="button"
     >

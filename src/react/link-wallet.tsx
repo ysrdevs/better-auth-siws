@@ -8,11 +8,13 @@ import { SolanaProvider, type SolanaProviderProps } from "./provider";
 
 export type SolanaLinkWalletProps = {
   baseURL?: string;
+  basePath?: string;
   onLink?: (walletAddress: string) => void;
   onUnlink?: () => void;
   onError?: (error: string) => void;
   className?: string;
   unlinkClassName?: string;
+  disabled?: boolean;
   cluster?: SolanaProviderProps["cluster"];
   endpoint?: SolanaProviderProps["endpoint"];
   renderLinked?: (wallet: { address: string; onUnlink: () => void }) => React.ReactNode;
@@ -21,11 +23,13 @@ export type SolanaLinkWalletProps = {
 
 function LinkWalletInner({
   baseURL = "",
+  basePath = "/api/auth",
   onLink,
   onUnlink,
   onError,
   className,
   unlinkClassName,
+  disabled,
   renderLinked,
   children,
 }: Omit<SolanaLinkWalletProps, "cluster" | "endpoint">) {
@@ -39,7 +43,7 @@ function LinkWalletInner({
 
   const fetchWallets = async () => {
     try {
-      const res = await fetch(`${baseURL}/api/auth/siws/wallets`);
+      const res = await fetch(`${baseURL}${basePath}/siws/wallets`);
       const data = await res.json();
       if (data.wallets?.[0]) {
         setLinkedWallet(data.wallets[0].walletAddress);
@@ -98,7 +102,7 @@ function LinkWalletInner({
     }
 
     try {
-      const createRes = await fetch(`${baseURL}/api/auth/siws/nonce`, {
+      const createRes = await fetch(`${baseURL}${basePath}/siws/nonce`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -127,7 +131,7 @@ function LinkWalletInner({
         signedMessage: Array.from(output.signedMessage),
       };
 
-      const linkRes = await fetch(`${baseURL}/api/auth/siws/link`, {
+      const linkRes = await fetch(`${baseURL}${basePath}/siws/link`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input, output: serializedOutput }),
@@ -155,7 +159,7 @@ function LinkWalletInner({
   const handleUnlink = async () => {
     if (!linkedWallet) return;
     try {
-      const res = await fetch(`${baseURL}/api/auth/siws/unlink`, {
+      const res = await fetch(`${baseURL}${basePath}/siws/unlink`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ walletAddress: linkedWallet }),
@@ -187,7 +191,7 @@ function LinkWalletInner({
         <span style={{ fontFamily: "monospace", fontSize: "0.875rem" }}>
           {truncated}
         </span>
-        <button onClick={handleUnlink} className={unlinkClassName} type="button">
+        <button onClick={handleUnlink} disabled={disabled} className={unlinkClassName} type="button">
           Unlink
         </button>
       </div>
@@ -197,7 +201,7 @@ function LinkWalletInner({
   return (
     <button
       onClick={handleLinkClick}
-      disabled={linking}
+      disabled={linking || disabled}
       className={className}
       type="button"
     >

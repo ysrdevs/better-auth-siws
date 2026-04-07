@@ -14,7 +14,7 @@ Sign In With Solana (SIWS) plugin for [Better Auth](https://www.better-auth.com/
 ## Installation
 
 ```bash
-npm install better-auth-siws @solana/wallet-adapter-react @solana/wallet-adapter-react-ui @solana/wallet-standard-features @solana/wallet-standard-util @solana/web3.js
+npm install @pinklemon8/better-auth-siws @solana/wallet-adapter-react @solana/wallet-adapter-react-ui @solana/wallet-standard-features @solana/wallet-standard-util @solana/web3.js
 ```
 
 ## Quick Start
@@ -24,8 +24,8 @@ npm install better-auth-siws @solana/wallet-adapter-react @solana/wallet-adapter
 ```ts
 // auth.ts
 import { betterAuth } from "better-auth";
-import { siws } from "better-auth-siws";
-import { siwsLink } from "better-auth-siws/link";
+import { siws } from "@pinklemon8/better-auth-siws";
+import { siwsLink } from "@pinklemon8/better-auth-siws/link";
 
 export const auth = betterAuth({
   // ...your config
@@ -47,7 +47,7 @@ export const auth = betterAuth({
 ```ts
 // auth-client.ts
 import { createAuthClient } from "better-auth/react";
-import { siwsClient } from "better-auth-siws/client";
+import { siwsClient } from "@pinklemon8/better-auth-siws/client";
 
 export const authClient = createAuthClient({
   plugins: [siwsClient()],
@@ -59,7 +59,7 @@ export const authClient = createAuthClient({
 Drop-in sign-in button:
 
 ```tsx
-import { SolanaSignInButton } from "better-auth-siws/react";
+import { SolanaSignInButton } from "@pinklemon8/better-auth-siws/react";
 
 function LoginPage() {
   return (
@@ -78,7 +78,7 @@ function LoginPage() {
 Wallet linking for settings pages:
 
 ```tsx
-import { SolanaLinkWallet } from "better-auth-siws/react";
+import { SolanaLinkWallet } from "@pinklemon8/better-auth-siws/react";
 
 function WalletSettings() {
   return (
@@ -158,8 +158,8 @@ authClient.solana.getLinkedWallets();
 | Component | Props | Description |
 |---|---|---|
 | `SolanaProvider` | `cluster`, `endpoint`, `autoConnect` | Wraps Solana wallet adapter providers |
-| `SolanaSignInButton` | `baseURL`, `onSuccess`, `onError`, `className`, `cluster`, `endpoint` | Complete sign-in button |
-| `SolanaLinkWallet` | `baseURL`, `onLink`, `onUnlink`, `onError`, `className`, `cluster`, `endpoint`, `renderLinked` | Wallet link/unlink component |
+| `SolanaSignInButton` | `baseURL`, `basePath`, `onSuccess`, `onError`, `className`, `disabled`, `cluster`, `endpoint` | Complete sign-in button |
+| `SolanaLinkWallet` | `baseURL`, `basePath`, `onLink`, `onUnlink`, `onError`, `className`, `disabled`, `cluster`, `endpoint`, `renderLinked` | Wallet link/unlink component |
 
 ## How It Works
 
