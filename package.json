@@ -1,6 +1,6 @@
 {
   "name": "@pinklemon8/better-auth-siws",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Sign In With Solana (SIWS) plugin for Better Auth — wallet authentication, linking, and ready-made React components",
   "license": "MIT",
   "type": "module",
