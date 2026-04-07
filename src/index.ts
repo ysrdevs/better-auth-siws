@@ -110,8 +110,8 @@ export const siws = (options?: SiwsPluginOptions) => ({
           });
         }
 
-        await ctx.context.internalAdapter.deleteVerificationValue(
-          verification.id
+        await ctx.context.internalAdapter.deleteVerificationByIdentifier(
+          `siws:${walletAddress}`
         );
 
         const linkedAccount = (await ctx.context.adapter.findOne({
@@ -139,8 +139,7 @@ export const siws = (options?: SiwsPluginOptions) => ({
             });
 
             const session = await ctx.context.internalAdapter.createSession(
-              user.id,
-              ctx
+              user.id
             );
 
             if (!session) {
@@ -197,8 +196,7 @@ export const siws = (options?: SiwsPluginOptions) => ({
         }
 
         const session = await ctx.context.internalAdapter.createSession(
-          user.id,
-          ctx
+          user.id
         );
 
         if (!session) {

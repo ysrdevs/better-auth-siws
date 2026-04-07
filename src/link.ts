@@ -64,8 +64,8 @@ export const siwsLink = (_options?: Pick<SiwsPluginOptions, "chainId">) => ({
         }
 
         // Delete used nonce to prevent reuse
-        await ctx.context.internalAdapter.deleteVerificationValue(
-          verification.id
+        await ctx.context.internalAdapter.deleteVerificationByIdentifier(
+          `siws:${walletAddress}`
         );
 
         const existing = await ctx.context.adapter.findOne({
