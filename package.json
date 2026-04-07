@@ -1,6 +1,6 @@
 {
   "name": "@pinklemon8/better-auth-siws",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sign In With Solana (SIWS) plugin for Better Auth — wallet authentication, linking, and ready-made React components",
   "license": "MIT",
   "type": "module",
@@ -51,10 +51,18 @@
     "@solana/web3.js": ">=1.90.0"
   },
   "peerDependenciesMeta": {
-    "react": { "optional": true },
-    "react-dom": { "optional": true },
-    "@solana/wallet-adapter-react": { "optional": true },
-    "@solana/wallet-adapter-react-ui": { "optional": true }
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "@solana/wallet-adapter-react": {
+      "optional": true
+    },
+    "@solana/wallet-adapter-react-ui": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "better-auth": "^1.6.0",
